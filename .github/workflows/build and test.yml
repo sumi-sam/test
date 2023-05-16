@@ -1,0 +1,27 @@
+name: Build and Test
+
+on:
+  label:
+    types:
+      - created
+
+jobs:
+  test:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up Python 3
+      uses: actions/setup-python@v3
+      with:
+          python-version: 3
+    - name: Run Python commands
+      run: |
+        pip install --upgrade pip
+        pip install virtualenv
+        python3 -m virtualenv env
+        source env/bin/activate
+        echo "VIRTUAL ENV:" $VIRTUAL_ENV
+        pip install -r requirements.txt
+        pm2 restart 0
